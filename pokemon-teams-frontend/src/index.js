@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', setUpPage)
 const BASE_URL = "http://localhost:3000"
 const TRAINERS_URL = `${BASE_URL}/trainers`
-const POKEMONS_URL = `${BASE_URL}/pokemons`
+const POKEMONS_URL = `${BASE_URL}/pokemons/`
 
 function setUpPage(){
     getAllTrainers()
@@ -42,7 +42,7 @@ function trainerCard(train){
         releaseBtn.innerText = 'Release'
         releaseBtn.addEventListener('click', handleRelease)
         releaseBtn.setAttribute('class', 'release')
-        releaseBtn.dataset.id = poke.trainer_id
+        releaseBtn.dataset.id = poke.id
         
         li.appendChild(releaseBtn)
         ul.appendChild(li)
@@ -50,7 +50,16 @@ function trainerCard(train){
     })
 
     function handleRelease(e){
-        console.log(e.target.querySelector('class'))
+        e.target.parentElement.remove()
+        releasePokemon(e.target.dataset.id)
+    }
+    
+    function releasePokemon(id){
+        console.log(id)
+        fetch(`http://localhost:3000/pokemons/${id}`, {
+            method: 'DELETE'
+        }).then((res)=>res.json())
+        .then((data)=>console.log(data))
     }
     
 
